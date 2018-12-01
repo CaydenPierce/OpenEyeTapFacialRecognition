@@ -6,6 +6,7 @@ from time import sleep
 import csv
 import datetime
 from time import sleep
+import tkinter as tk
 
 #this program controls the face recognition abilities of the OpenEyeTap
 #First, any images that have been added to the 'newpeople' folder are loaded, and an encoding is made based on each face. The encoding and the name of the individual is then saved in the encodings folder,
@@ -97,14 +98,18 @@ camera.resolution = (320, 240)
 #array to store picture
 image = np.empty((240, 320, 3), dtype=np.uint8)
 
+#declare loop counter FOR TESTING PURPOSES
 counter = 0
+
+
 #main program loop
 while True:
     counter += 1
     print("loop {}".format(counter))
     #take pic
     camera.capture(image, format='rgb')
-    
+
+
     #scan for faces
     
     face_locations = face_recognition.face_locations(image)
@@ -117,4 +122,5 @@ while True:
         for i, value in enumerate(faceMatchList):
             if value:
                 print("I see {} {}!".format(names[i][0], names[i][1]))
+        #quick break        
         sleep(1)

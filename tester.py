@@ -1,7 +1,49 @@
-import numpy as np
+import tkinter as tk
+import face_recognition
 import os
+import numpy as np
+import picamera
+from time import sleep
 import csv
+import datetime
+from time import sleep
+import tkinter as tk
 
+#this program controls the face recognition abilities of the OpenEyeTap
+#First, any images that have been added to the 'newpeople' folder are loaded, and an encoding is made based on each face. The encoding and the name of the individual is then saved in the encodings folder,
+#and the picture is deleted from the 'newimages' folder
+#the program then begins watching the camera, if a person is detected, their name is displayed. If the person is not recognized, a picture of the individual is then saved in the 'newpeople' folder for later labelling by the user
+
+#open encoding CSV and create list
+def openEncoding(fileName):
+    with open(fileName, 'r') as f:
+        reader = csv.reader(f, delimiter = ',')
+        encoding = list(reader)
+        encoding = np.array(encoding[0])
+    encoding = encoding.astype(np.float)
+    return encoding
+
+#saves encoding to CSV file
+def saveEncoding(encoding, fileName):
+    if fileName:
+        imageFileName = fileName
+    else:
+        #create name of file using current date and time
+        imageFileName = "unkownFaceDataTakenAt_{}_{}".format(datetime.datetime.now().date(), datetime.datetime.time(datetime.datetime.now()))
+    #save encoding to csv
+    with open(("./encodings/{}".format(imageFileName)), "w", newline="") as myEncodingFile:
+        wr = csv.writer(myEncodingFile, delimiter = ',')
+        wr.writerows(encoding)
+
+def getEncoding(image):
+
+    #load image from file
+    #unknownFace = face_recognition.load_image_file(imageURI)
+    
+
+    #create encoding
+    unknownFaceEncoding = face_recognition.face_encodings(image)
+    return unknownFaceEncoding
 
 
 def loadNewPeople():
@@ -21,11 +63,12 @@ def loadNewPeople():
 
     for i, file in enumerate(files):
         fullName = names[i][0] + " " + names[i][1]
-        saveEncoding((getEncoding("./newpeopleimages/{}".format(file))), fullName)
+        #load image from file
+        unknownFace = face_recognition.load_image_file(("./newpeopleimages/{}".format(file)))
+        saveEncoding((getEncoding(unknownFace)), fullName)
         os.system("cp {} {}".format(("./newpeopleimages/{}".format(file)), ("./knownpeopleimages/{}".format(file))))
         #os.remove("./newpeopleimages/{}".format(file))
-
-        
+            
 def loadKnownEncodings():
     knownEncodings = []
     names = []
@@ -41,14 +84,56 @@ def loadKnownEncodings():
         names.append([firstName, lastName])
     knownEncodings = np.array(knownEncodings)       
     return knownEncodings, names
+        
 
-#open encoding CSV and create list
-def openEncoding(fileName):
-    with open(fileName, 'r') as f:
-        reader = csv.reader(f, delimiter = ',')
-        encoding = list(reader)
-        encoding = np.array(encoding[0])
-    encoding = encoding.astype(np.float)
-    return encoding
+#first, load any new people we want to add to our database of encodings
+loadNewPeople()
 
-print(loadKnownEncodings())
+#then, load all the poeple we already know
+knownEncodings, names = loadKnownEncodings()
+
+#create the camera, set to low resolution for faster processing
+camera = picamera.PiCamera()
+camera.resolution = (320, 240)
+
+#array to store picture
+image = np.empty((240, 320, 3), dtype=np.uint8)
+
+#declare loop counter FOR TESTING PURPOSES
+counter = 0
+
+root = tk.Tk()
+root.configure(background='black')
+root.attributes('-zoomed', True)
+#root.attributes("-fullscreen", True)  # substitute `Tk` for whatever your `Tk()` object is called
+v = tk.StringVar()
+w = tk.Label(root, textvariable=v, font=(None, 150), bg = 'black', fg = 'white')
+w.config(bg="black")
+w.pack()
+
+while True:
+#main program loop
+    counter += 1
+    print("loop {}".format(counter))
+    #take pic
+    camera.capture(image, format='rgb')
+
+
+    #scan for faces
+    
+    face_locations = face_recognition.face_locations(image)
+    if face_locations:
+        #create encoding
+        unknownFaceEncoding = getEncoding(image)
+        #print if match
+        faceMatchList = face_recognition.compare_faces(knownEncodings, unknownFaceEncoding)
+        print(faceMatchList)
+        for i, value in enumerate(faceMatchList):
+            if value:
+                fullName = names[i][0] + names[i][1]
+                print("I see {}!".format(fullName))
+                v.set(fullName)
+    else:
+        v.set("")
+    root.update_idletasks()
+    
