@@ -66,7 +66,7 @@ def loadNewPeople():
         unknownFace = face_recognition.load_image_file(("./newpeopleimages/{}".format(file)))
         saveEncoding((getEncoding(unknownFace)), fullName)
         os.system("cp {} {}".format(("./newpeopleimages/{}".format(file)), ("./knownpeopleimages/{}".format(file))))
-        #os.remove("./newpeopleimages/{}".format(file))
+        os.remove("./newpeopleimages/{}".format(file))
             
 def loadKnownEncodings():
     knownEncodings = []

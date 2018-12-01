@@ -111,7 +111,7 @@ w = tk.Label(root, textvariable=v, font=(None, 150), bg = 'black', fg = 'white')
 w.config(bg="black")
 w.pack()
 
-while True:
+while counter < 25:
 #main program loop
     counter += 1
     print("loop {}".format(counter))
