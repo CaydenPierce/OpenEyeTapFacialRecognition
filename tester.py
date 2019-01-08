@@ -67,7 +67,7 @@ def loadNewPeople():
         unknownFace = face_recognition.load_image_file(("./newpeopleimages/{}".format(file)))
         saveEncoding((getEncoding(unknownFace)), fullName)
         os.system("cp {} {}".format(("./newpeopleimages/{}".format(file)), ("./knownpeopleimages/{}".format(file))))
-        #os.remove("./newpeopleimages/{}".format(file))
+        os.remove("./newpeopleimages/{}".format(file))
             
 def loadKnownEncodings():
     knownEncodings = []
@@ -109,6 +109,7 @@ root.attributes('-zoomed', True)
 v = tk.StringVar()
 w = tk.Label(root, textvariable=v, font=(None, 150), bg = 'black', fg = 'white')
 w.config(bg="black")
+w.place(relx=.5, rely=.5, anchor="center")
 w.pack()
 
 while counter < 25:
@@ -120,9 +121,9 @@ while counter < 25:
 
 
     #scan for faces
-    
     face_locations = face_recognition.face_locations(image)
-    if face_locations:
+    
+    if face_locations: #runs if face is detected
         #create encoding
         unknownFaceEncoding = getEncoding(image)
         #print if match
@@ -133,6 +134,10 @@ while counter < 25:
                 fullName = names[i][0] + names[i][1]
                 print("I see {}!".format(fullName))
                 v.set(fullName)
+            else:
+                fullName = "Unknown person"
+                v.set(fullName)
+                print("Unknown person")
     else:
         v.set("")
     root.update_idletasks()
