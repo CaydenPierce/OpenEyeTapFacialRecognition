@@ -8,6 +8,7 @@ import csv
 import datetime
 from time import sleep
 import tkinter as tk
+import scipy
 
 #this program controls the face recognition abilities of the OpenEyeTap
 #First, any images that have been added to the 'newpeople' folder are loaded, and an encoding is made based on each face. The encoding and the name of the individual is then saved in the encodings folder,
@@ -35,11 +36,7 @@ def saveEncoding(encoding, fileName):
         wr = csv.writer(myEncodingFile, delimiter = ',')
         wr.writerows(encoding)
 
-def getEncoding(image):
-
-    #load image from file
-    #unknownFace = face_recognition.load_image_file(imageURI)
-    
+def getEncoding(image):    
 
     #create encoding
     unknownFaceEncoding = face_recognition.face_encodings(image)
@@ -69,12 +66,12 @@ def loadNewPeople():
         os.system("cp {} {}".format(("./newpeopleimages/{}".format(file)), ("./knownpeopleimages/{}".format(file))))
         os.remove("./newpeopleimages/{}".format(file))
             
-def loadKnownEncodings():
+def loadEncodings(which): #loads known or unknown encodings
     knownEncodings = []
     names = []
     peopleDB = [] #this holds the names 
-    for i, file in enumerate(os.listdir("./encodings")):
-        currentEncoding = openEncoding("./encodings/{}".format(file))
+    for i, file in enumerate(os.listdir("./{}_encodings".format(which))):
+        currentEncoding = openEncoding("./{}_encodings/{}".format(which, file))
         knownEncodings.append(currentEncoding)
         a = file.partition(".")[0] #remove file extension
         for j, char in enumerate(a[1:]):
@@ -90,7 +87,7 @@ def loadKnownEncodings():
 loadNewPeople()
 
 #then, load all the poeple we already know
-knownEncodings, names = loadKnownEncodings()
+knownEncodings, names = loadEncodings("known")
 
 #create the camera, set to low resolution for faster processing
 camera = picamera.PiCamera()
@@ -105,11 +102,10 @@ counter = 0
 root = tk.Tk()
 root.configure(background='black')
 root.attributes('-zoomed', True)
-#root.attributes("-fullscreen", True)  # substitute `Tk` for whatever your `Tk()` object is called
+#root.attributes("-fullscreen", True)
 v = tk.StringVar()
 w = tk.Label(root, textvariable=v, font=(None, 150), bg = 'black', fg = 'white')
 w.config(bg="black")
-w.place(relx=.5, rely=.5, anchor="center")
 w.pack()
 
 while counter < 25:
@@ -134,10 +130,14 @@ while counter < 25:
                 fullName = names[i][0] + names[i][1]
                 print("I see {}!".format(fullName))
                 v.set(fullName)
+                break
             else:
                 fullName = "Unknown person"
                 v.set(fullName)
-                print("Unknown person")
+        if (fullName == "Unknown person"):
+            scipy.misc.imsave('./newpeopleimages/outfile.jpg', image)
+            #camera.capture('./newpeopleimages/UKNOWN.jpg')
+            
     else:
         v.set("")
     root.update_idletasks()
