@@ -1,3 +1,10 @@
+'''
+Facial Recognition for the OpenEyeTap
+Created by Cayden Pierce 2018/19. Some code borrowed from dashcam utility created by the OpenEyeTap team.
+Humanistic Intelligence is the future we are creating.
+'''
+
+
 import tkinter as tk
 import face_recognition
 import os
@@ -9,6 +16,8 @@ import datetime
 from time import sleep
 import tkinter as tk
 import scipy
+import datetime as dt
+
 
 #this program controls the face recognition abilities of the OpenEyeTap
 #First, any images that have been added to the 'newpeople' folder are loaded, and an encoding is made based on each face. The encoding and the name of the individual is then saved in the encodings folder,
@@ -81,6 +90,23 @@ def loadEncodings(which): #loads known or unknown encodings
         names.append([firstName, lastName])
     knownEncodings = np.array(knownEncodings)       
     return knownEncodings, names
+
+
+def sec():
+    sec.var = dt.datetime.now().strftime('%S')
+    return sec.var
+
+sec.var=0 # initializes the sec variable, to be used later
+
+def Timestamp():
+    # Adds a timestamp to each frame
+    if (dt.datetime.now().strftime('%S') != sec.var): # accesses the second value from the last time sec() was called
+        # updates the annotation on the video if a second has passed
+        camera.annotate_text_size = fontSize
+        camera.annotate_background = picamera.Color('black')
+        camera.annotate_text = CurrentTime()
+        sec() # calls the second function so that it can update its current second value
+
         
 
 #first, load any new people we want to add to our database of encodings
@@ -98,7 +124,8 @@ image = np.empty((240, 320, 3), dtype=np.uint8)
 
 #declare loop counter FOR TESTING PURPOSES
 counter = 0
-
+camera.start_preview()
+'''
 root = tk.Tk()
 root.configure(background='black')
 root.attributes('-zoomed', True)
@@ -107,11 +134,15 @@ v = tk.StringVar()
 w = tk.Label(root, textvariable=v, font=(None, 150), bg = 'black', fg = 'white')
 w.config(bg="black")
 w.pack()
-
-while counter < 25:
+'''
+while counter < 15:
 #main program loop
     counter += 1
     print("loop {}".format(counter))
+
+    # Shows timestamp on top of video
+    Timestamp() 
+    
     #take pic
     camera.capture(image, format='rgb')
 
@@ -128,17 +159,19 @@ while counter < 25:
         for i, value in enumerate(faceMatchList):
             if value:
                 fullName = names[i][0] + names[i][1]
+                camera.annotate_text = fullName
                 print("I see {}!".format(fullName))
-                v.set(fullName)
+                camera.annotate_text = fullName
+                #v.set(fullName)
                 break
             else:
                 fullName = "Unknown person"
-                v.set(fullName)
+                #v.set(fullName)
         if (fullName == "Unknown person"):
-            scipy.misc.imsave('./newpeopleimages/outfile.jpg', image)
+            #scipy.misc.imsave('./newpeopleimages/outfile.jpg', image)
             #camera.capture('./newpeopleimages/UKNOWN.jpg')
             
     else:
-        v.set("")
-    root.update_idletasks()
+        #v.set("")
+    #root.update_idletasks()
     

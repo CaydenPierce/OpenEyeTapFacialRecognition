@@ -1,6 +1,6 @@
 TECHNICAL
 
-To try out the code on your EyeTap, upload tester.py to hardware. Set a bash script to start tester.py upon booting.
+To try out the code on your EyeTap, upload facerec.py to hardware. Set .bashrc to start tester.py upon booting. This requires some GUI (xserver) env already setup.
 
 The face file is an example of a face encoding. It is in CSV format and it loaded in python into a numpy array as such.
 
