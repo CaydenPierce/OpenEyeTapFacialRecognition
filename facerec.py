@@ -91,6 +91,8 @@ def loadEncodings(which): #loads known or unknown encodings
     knownEncodings = np.array(knownEncodings)       
     return knownEncodings, names
 
+def CurrentTime():
+    return('%s')%(dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 def sec():
     sec.var = dt.datetime.now().strftime('%S')
@@ -102,10 +104,11 @@ def Timestamp():
     # Adds a timestamp to each frame
     if (dt.datetime.now().strftime('%S') != sec.var): # accesses the second value from the last time sec() was called
         # updates the annotation on the video if a second has passed
-        camera.annotate_text_size = fontSize
+        camera.annotate_text_size = 60
         camera.annotate_background = picamera.Color('black')
         camera.annotate_text = CurrentTime()
         sec() # calls the second function so that it can update its current second value
+
 
         
 
@@ -122,26 +125,19 @@ camera.resolution = (320, 240)
 #array to store picture
 image = np.empty((240, 320, 3), dtype=np.uint8)
 
-#declare loop counter FOR TESTING PURPOSES
-counter = 0
+#start camera view
 camera.start_preview()
-'''
-root = tk.Tk()
-root.configure(background='black')
-root.attributes('-zoomed', True)
-#root.attributes("-fullscreen", True)
-v = tk.StringVar()
-w = tk.Label(root, textvariable=v, font=(None, 150), bg = 'black', fg = 'white')
-w.config(bg="black")
-w.pack()
-'''
+
+#counter for testing
+counter = 0
+
 while counter < 15:
 #main program loop
     counter += 1
     print("loop {}".format(counter))
 
     # Shows timestamp on top of video
-    Timestamp() 
+    #Timestamp() 
     
     #take pic
     camera.capture(image, format='rgb')
@@ -167,11 +163,12 @@ while counter < 15:
             else:
                 fullName = "Unknown person"
                 #v.set(fullName)
-        if (fullName == "Unknown person"):
+        #if (fullName == "Unknown person"):
             #scipy.misc.imsave('./newpeopleimages/outfile.jpg', image)
             #camera.capture('./newpeopleimages/UKNOWN.jpg')
             
     else:
-        #v.set("")
-    #root.update_idletasks()
-    
+        #reset annotation
+        camera.annotate_text = ""
+        
+camera.stop_preview()
