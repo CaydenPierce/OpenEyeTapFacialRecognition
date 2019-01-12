@@ -1,6 +1,12 @@
 TECHNICAL
 
-To try out the code on your EyeTap, upload facerec.py to hardware. Set .bashrc to start tester.py upon booting. This requires some GUI (xserver) env already setup.
+To try out the code on your EyeTap, upload facerec.py to hardware. Set .bashrc to start tester.py upon booting. This requires some GUI env already setup. I am using PIXEL and lightdm.
+
+Follow https://gist.github.com/ageitgey/1ac8dbe8572f3f533df6269dab35df65 to install face_recognitino library.
+
+Follow https://gist.github.com/kmpm/8e535a12a45a32f6d36cf26c7c6cef51 to setup GUI in Raspbian Stretch Lite.
+
+Use raspi-config to enable picamera.
 
 The face file is an example of a face encoding. It is in CSV format and it loaded in python into a numpy array as such.
 
