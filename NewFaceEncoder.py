@@ -2,6 +2,7 @@ import face_recognition
 import numpy as np
 import picamera
 from time import sleep
+import csv
 
 #create encoding for given image
 def getEncoding(imageURI):
@@ -22,7 +23,7 @@ def saveEncoding(encoding, fileName):
         #create name of file using current date and time
         imageFileName = "unkownFaceDataTakenAt_{}_{}".format(datetime.datetime.now().date(), datetime.datetime.time(datetime.datetime.now()))
     #save encoding to csv
-    with open(("./encodings/{}".format(imageFileName)), "w", newline="") as myEncodingFile:
+    with open(("./known_encodings/{}".format(imageFileName)), "w", newline="") as myEncodingFile:
         wr = csv.writer(myEncodingFile, delimiter = ',')
         wr.writerows(encoding)
 
