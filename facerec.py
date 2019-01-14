@@ -42,7 +42,19 @@ def saveEncoding(encoding, fileName):
         wr = csv.writer(myEncodingFile, delimiter = ',')
         wr.writerows(encoding)
 
-def getEncoding(image):    
+#create encoding  given URI
+def getEncodingURI(imageURI):
+    #load image from file
+    unknownFace = face_recognition.load_image_file(imageURI)
+
+    #create encoding
+    print("Processing...")
+    uknownFaceEncoding = face_recognition.face_encodings(unknownFace)
+    print("Created new encoding for {}!".format(imageURI))
+    return uknownFaceEncoding
+
+#get encoding given an image
+def getEncodingImg(image):    
 
     #create encoding
     unknownFaceEncoding = face_recognition.face_encodings(image)
@@ -55,20 +67,21 @@ def loadNewPeople():
     files = []
     
     for file in os.listdir("./newpeopleimages"):
+        files.append(file)
         if not (file.startswith("ToName")): #this is used as all pictures that requiring labelling are appended with the suffix "ToName"-, followed by the time the picture was taken
-            files.append(file)
             a = file.partition(".")[0] #remove file extension
             for i, char in enumerate(a[1:]):
                 if char.isupper():
                     firstName = a[:i+1]
                     lastName = a[i+1:]
-            names.append([firstName, lastName])
-
+                    names.append([firstName, lastName])
+                    break
+    
     for i, file in enumerate(files):
         fullName = names[i][0] + " " + names[i][1]
         #load image from file
-        unknownFace = face_recognition.load_image_file(("./newpeopleimages/{}".format(file)))
-        saveEncoding((getEncoding(unknownFace)), fullName)
+        print("./newpeopleimages/{}".format(file))
+        saveEncoding(getEncodingURI("./newpeopleimages/{}".format(file)), fullName)
         os.system("cp {} {}".format(("./newpeopleimages/{}".format(file)), ("./knownpeopleimages/{}".format(file))))
         os.remove("./newpeopleimages/{}".format(file))
             
@@ -145,7 +158,7 @@ while counter < 15:
     
     if face_locations: #runs if face is detected
         #create encoding
-        unknownFaceEncoding = getEncoding(image)
+        unknownFaceEncoding = getEncodingImg(image)
         #print if match
         faceMatchList = face_recognition.compare_faces(knownEncodings, unknownFaceEncoding)
         print(faceMatchList)
