@@ -5,7 +5,6 @@ Humanistic Intelligence is the future we are creating.
 '''
 
 
-import tkinter as tk
 import face_recognition
 import os
 import numpy as np
@@ -14,8 +13,6 @@ from time import sleep
 import csv
 import datetime
 from time import sleep
-import tkinter as tk
-import scipy
 import datetime as dt
 
 
