@@ -1,7 +1,7 @@
 '''
 Facial Recognition for the OpenEyeTap
 Created by Cayden Pierce 2018/19. Some code borrowed from dashcam utility created by the OpenEyeTap team.
-Humanistic Intelligence is the future we are creating.
+Humanistic Intelligence is the future we are all creating together.
 '''
 
 
