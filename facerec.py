@@ -119,7 +119,10 @@ def Timestamp():
         camera.annotate_text = CurrentTime()
         sec() # calls the second function so that it can update its current second value
 
-
+def createLog(name): #adds log of seeing person. Contains context such as who, what, where, when
+        with open("./memory/lifelog.txt", "a") as log: #open in append and read mode
+            log.write(CurrentTime() + " " + name + "\n")
+            
         
 
 #first, load any new people we want to add to our database of encodings
@@ -169,6 +172,7 @@ while counter < 15:
                 print("I see {}!".format(fullName))
                 camera.annotate_text = fullName
                 #v.set(fullName)
+                createLog(fullName)
                 break
             else:
                 fullName = "Unknown person"
