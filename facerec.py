@@ -137,6 +137,7 @@ camera.resolution = (320, 240)
 
 #array to store picture
 image = np.empty((240, 320, 3), dtype=np.uint8)
+camera.rotation = 90 # depends on the orientation of the pi camera
 
 #start camera view
 camera.start_preview()
@@ -170,13 +171,13 @@ while counter < 15:
                 fullName = names[i][0] + names[i][1]
                 camera.annotate_text = fullName
                 print("I see {}!".format(fullName))
-                camera.annotate_text = fullName
                 #v.set(fullName)
                 createLog(fullName)
                 break
             else:
                 fullName = "Unknown person"
-                #v.set(fullName)
+        camera.annotate_text = fullName
+        #v.set(fullName)
         #if (fullName == "Unknown person"):
             #scipy.misc.imsave('./newpeopleimages/outfile.jpg', image)
             #camera.capture('./newpeopleimages/UKNOWN.jpg')
