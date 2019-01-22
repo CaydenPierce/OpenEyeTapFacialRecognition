@@ -39,7 +39,7 @@ def saveEncoding(encoding, fileName):
         #create name of file using current date and time
         imageFileName = "unkownFaceDataTakenAt_{}_{}".format(datetime.datetime.now().date(), datetime.datetime.time(datetime.datetime.now()))
     #save encoding to csv
-    with open(("./known_encodings/{}".format(imageFileName)), "w", newline="") as myEncodingFile:
+    with open((os.path.join(os.path.dirname(__file__), "known_encodings/{}".format(imageFileName))), "w", newline="") as myEncodingFile:
         wr = csv.writer(myEncodingFile, delimiter = ',')
         wr.writerows(encoding)
 
@@ -67,7 +67,7 @@ def loadNewPeople():
     names = []
     files = []
     
-    for file in os.listdir("./newpeopleimages"):
+    for file in os.listdir(os.path.join(os.path.dirname(__file__), "newpeopleimages")):
         files.append(file)
         if not (file.startswith("ToName")): #this is used as all pictures that requiring labelling are appended with the suffix "ToName"-, followed by the time the picture was taken
             a = file.partition(".")[0] #remove file extension
@@ -81,17 +81,17 @@ def loadNewPeople():
     for i, file in enumerate(files):
         fullName = names[i][0] + " " + names[i][1]
         #load image from file
-        print("./newpeopleimages/{}".format(file))
-        saveEncoding(getEncodingURI("./newpeopleimages/{}".format(file)), fullName)
+        #print("./newpeopleimages/{}".format(file))
+        saveEncoding(getEncodingURI((os.path.join(os.path.dirname(__file__), "newpeopleimages/{}".format(file))), fullName))
         os.system("cp {} {}".format(("./newpeopleimages/{}".format(file)), ("./knownpeopleimages/{}".format(file))))
-        os.remove("./newpeopleimages/{}".format(file))
+        os.remove(os.path.join(os.path.dirname(__file__), "newpeopleimages/{}".format(file)))
             
 def loadEncodings(which): #loads known or unknown encodings
     knownEncodings = []
     names = []
     peopleDB = [] #this holds the names 
-    for i, file in enumerate(os.listdir("./{}_encodings".format(which))):
-        currentEncoding = openEncoding("./{}_encodings/{}".format(which, file))
+    for i, file in enumerate(os.listdir(os.path.join(os.path.dirname(__file__), "{}_encodings".format(which)))):
+        currentEncoding = openEncoding(os.path.join(os.path.dirname(__file__), "{}_encodings/{}".format(which, file)))
         knownEncodings.append(currentEncoding)
         a = file.partition(".")[0] #remove file extension
         for j, char in enumerate(a[1:]):
@@ -142,7 +142,7 @@ image = np.empty((240, 320, 3), dtype=np.uint8)
 root = tk.Tk()
 root.configure(background='black')
 root.attributes('-zoomed', True) #setting dispaly fullscreen
-root.attributes('-fullscreen',True)
+#root.attributes('-fullscreen',True)
 root.config(cursor="none") #disable cursor
 #root.attributes("-fullscreen", True)  # substitute `Tk` for whatever your `Tk()` object is called
 v = tk.StringVar()

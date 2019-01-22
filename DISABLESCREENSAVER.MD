@@ -19,4 +19,4 @@ exec /etc/alternatives/x-session-manager      # start lxde
 ```
 Save
 
-Screensaver is now disable!
+Screensaver is now disabled!
