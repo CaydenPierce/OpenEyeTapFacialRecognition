@@ -142,7 +142,7 @@ image = np.empty((240, 320, 3), dtype=np.uint8)
 root = tk.Tk()
 root.configure(background='black')
 root.attributes('-zoomed', True) #setting dispaly fullscreen
-#root.attributes('-fullscreen',True)
+root.attributes('-fullscreen',True)
 root.config(cursor="none") #disable cursor
 #root.attributes("-fullscreen", True)  # substitute `Tk` for whatever your `Tk()` object is called
 v = tk.StringVar()
