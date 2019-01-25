@@ -12,7 +12,15 @@ OPTION 1
 To try out the code on your EyeTap, you can simply flash the SD image onto your SD and plug and play in the OpenEyeTap.
 
 OPTION 2
-Clone this repo to hardware. Set .bashrc to start facerec_GUI.py upon booting. This requires some GUI env already setup. I am using PIXEL and lightdm.
+Clone this repo to hardware. Set .bashrc to start facerec_GUI.py upon booting by adding lines:
+
+```
+export DISPLAY=:0.0
+python3 /home/pi/OpenEyeTapVirtualMemory/facerec_GUI.py
+```
+*replace path with your path.
+
+This requires some GUI env already setup. I am using PIXEL and lightdm.
 
 Follow https://gist.github.com/ageitgey/1ac8dbe8572f3f533df6269dab35df65 to install face_recognition library. This library is simply a wrapper for the dlib library, which must also be installed and built.
 

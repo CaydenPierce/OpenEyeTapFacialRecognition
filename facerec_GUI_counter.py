@@ -150,8 +150,13 @@ w = tk.Label(root, textvariable=v, font=(None, 65), bg = 'black', fg = 'white', 
 w.config(bg="black")
 w.pack()
 
-while True:
+#counter for testing
+counter = 0
+
+while counter < 15:
 #main program loop
+    counter += 1
+    print("loop {}".format(counter))
 
     # Shows timestamp on top of video
     #Timestamp() 
