@@ -9,8 +9,10 @@ This is loaded by the main program. It runs on a loop, reconnecting if disconnec
 
 import bluetooth
 import pynmea2
+from time import sleep
+import random
 
-def bluetoothServer(): #main
+def startBluetoothServer(): #main
     target = None
     #check for visible devices (do-while loop)
     while True:
@@ -29,23 +31,32 @@ def bluetoothServer(): #main
     # Create the client socket
     sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
     sock.connect((host, port))
+    return sock
 
-    #receive data
-    counter = 0
-    while counter < 99:
-         try:
-              data = sock.recv(1024)
-              data = data.decode('utf-8')
-              data = data.split('\r')
-              parsed = pynmea2.parse(data[0])
+def getLocation(sock): #receive data
+        
+         #try:
+              validNMEA = True
+              while validNMEA: #finding the data needed to pass to NMEA parser
+                  data = sock.recv(1024)
+                  data = data.decode('utf-8')
+                  print(data)
+                  print('\n')
+                  data = data.split('\r')
+                  for i, val in enumerate(data[:-1]): #don't scan last in case it isn't complete
+                      if val.startswith("$GPGGA"):
+                          index = i
+                          print("break")
+                          validNMEA = False
+                          break
+
+              parsed = pynmea2.parse(data[index])
               print("Recieved: ")
               #print(data[0])
               print("Latitude: " + str(parsed.latitude) + " Longitude: " + str(parsed.longitude))
-              counter += 1
-         except Exception:
-              print("Disconnected, aborting")
-              break
-
-    #close bluetooth connection
-    sock.close()
-bluetoothServer() 
+         #except Exception:
+              #print("Disconnected, aborting")
+              #close bluetooth connection
+              #sock.close()
+         #finally:
+              #None
