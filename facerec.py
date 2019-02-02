@@ -34,14 +34,14 @@ def openEncoding(fileName):
     return encoding
 
 #saves encoding to CSV file
-def saveEncoding(encoding, fileName):
+def saveEncoding(encoding, fileName, which): #pass the encodign, what we want to name it, and whether it is a knonw person or unknown person (who needs to be named by user)
     if fileName:
         imageFileName = fileName
     else:
         #create name of file using current date and time
         imageFileName = "unkownFaceDataTakenAt_{}_{}".format(datetime.datetime.now().date(), datetime.datetime.time(datetime.datetime.now()))
     #save encoding to csv
-    with open(("./known_encodings/{}".format(imageFileName)), "w", newline="") as myEncodingFile:
+    with open(("./{}_encodings/{}".format(which, imageFileName)), "w", newline="") as myEncodingFile:
         wr = csv.writer(myEncodingFile, delimiter = ',')
         wr.writerows(encoding)
 
@@ -84,16 +84,16 @@ def loadNewPeople():
         fullName = names[i][0] + " " + names[i][1]
         #load image from file
         print("./newpeopleimages/{}".format(file))
-        saveEncoding(getEncodingURI("./newpeopleimages/{}".format(file)), fullName)
+        saveEncoding(getEncodingURI("./newpeopleimages/{}".format(file)), fullName, 'known')
         os.system("cp {} {}".format(("./newpeopleimages/{}".format(file)), ("./knownpeopleimages/{}".format(file))))
         os.remove("./newpeopleimages/{}".format(file))
             
-def loadEncodings(which): #loads known or unknown encodings
+def loadKnownEncodings(): #loads known encodings
     knownEncodings = []
     names = []
     peopleDB = [] #this holds the names 
-    for i, file in enumerate(os.listdir("./{}_encodings".format(which))):
-        currentEncoding = openEncoding("./{}_encodings/{}".format(which, file))
+    for i, file in enumerate(os.listdir("./known_encodings")):
+        currentEncoding = openEncoding("./known_encodings/{}".format(file))
         knownEncodings.append(currentEncoding)
         a = file.partition(".")[0] #remove file extension
         for j, char in enumerate(a[1:]):
@@ -103,6 +103,15 @@ def loadEncodings(which): #loads known or unknown encodings
         names.append([firstName, lastName])
     knownEncodings = np.array(knownEncodings)       
     return knownEncodings, names
+
+def loadUnknownEncodings(): #loads unknown encodings
+    unknownEncodings = []
+    for i, file in enumerate(os.listdir("./unknown_encodings")):
+        currentEncoding = openEncoding("./unknown_encodings/{}".format(file))
+        unknownEncodings.append(currentEncoding)
+        a = file.partition(".")[0] #remove file extension
+    unknownEncodings = unknownEncodings     
+    return unknownEncodings
 
 def CurrentTime():
     return('%s')%(dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
@@ -137,8 +146,9 @@ sock = GPSbluetooth.startBluetoothServer()
 #first, load any new people we want to add to our database of encodings
 loadNewPeople()
 
-#then, load all the poeple we already know
-knownEncodings, names = loadEncodings("known")
+#then, load all the poeple we already know, and all the people we haven't yet named
+knownEncodings, names = loadKnownEncodings()
+unknownEncodings = loadUnknownEncodings()
 
 #create the camera, set to low resolution for faster processing
 camera = picamera.PiCamera()
@@ -172,9 +182,8 @@ while counter < 15:
     if face_locations: #runs if face is detected
         #create encoding
         unknownFaceEncoding = getEncodingImg(image)
-        #print if match
         faceMatchList = face_recognition.compare_faces(knownEncodings, unknownFaceEncoding)
-        print(faceMatchList)
+        #print(faceMatchList)
         for i, value in enumerate(faceMatchList):
             if value:
                 fullName = names[i][0] + names[i][1]
@@ -187,10 +196,18 @@ while counter < 15:
                 fullName = "Unknown person"
         camera.annotate_text = fullName
         #v.set(fullName)
-        if (fullName == "Unknown person"): #saves pictures of unknown people to be later named
-            img = Image.fromarray(image, 'RGB')
-            img.save('./newpeopleimages/ToName{}'.format(CurrentTime())
-            
+        if (fullName == "Unknown person"): #saves pictures and encodings of unknown people to be later named
+            #create encoding
+            unknownFaceEncoding = getEncodingImg(image)
+            faceMatchList = face_recognition.compare_faces(np.array(unknownEncodings), unknownFaceEncoding)
+            print(faceMatchList)
+            print(np.any(faceMatchList))
+            if not np.any(faceMatchList): #if none are true, then we save image and encoding
+                unknownEncodings.append(unknownFaceEncoding) #add it to our list of unknown encodings, stops us from resaving images of same person
+                time = CurrentTime()
+                img = Image.fromarray(image, 'RGB')
+                img.save('./newpeopleimages/ToName{}.jpg'.format(time))
+                saveEncoding(unknownFaceEncoding, 'ToName{}'.format(time), 'unknown')     
     else:
         #reset annotation
         camera.annotate_text = ""
