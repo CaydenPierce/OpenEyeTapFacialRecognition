@@ -95,6 +95,7 @@ def loadKnownEncodings(): #loads known encodings
     peopleDB = [] #this holds the names 
     for i, file in enumerate(os.listdir("./known_encodings")):
         currentEncoding = openEncoding("./known_encodings/{}".format(file))
+        #print(currentEncoding)
         knownEncodings.append(currentEncoding)
         a = file.partition(".")[0] #remove file extension
         for j, char in enumerate(a[1:]):
@@ -111,7 +112,7 @@ def loadUnknownEncodings(): #loads unknown encodings
         currentEncoding = openEncoding("./unknown_encodings/{}".format(file))
         unknownEncodings.append(currentEncoding)
         a = file.partition(".")[0] #remove file extension
-    unknownEncodings = np.array(unknownEncodings)   
+    unknownEncodings = unknownEncodings  
     return unknownEncodings
 
 def CurrentTime():
@@ -200,17 +201,12 @@ while counter < 15:
         if (fullName == "Unknown person"): #saves pictures and encodings of unknown people to be later named
             #create encoding
             unknownFaceEncoding = getEncodingImg(image)
-            print("nparray")
-            #print(unknownEncodings)
-            #faceRecArray = np.array(unknownEncodings)
-            #print(unknownEncodings)
-            faceMatchList = face_recognition.compare_faces(unknownEncodings, unknownFaceEncoding)
-            print(faceMatchList)
-            #print(unknownEncodings)
-            #print(faceMatchList)
-            #print(np.any(faceMatchList))
+            unknownFaceEncoding_append = (np.array(unknownFaceEncoding[0])).astype(np.float) #processing so it can be passed to face_recognition
+            print(unknownFaceEncoding)
+            print(unknownFaceEncoding_append)
+            faceMatchList = face_recognition.compare_faces(np.array(unknownEncodings), unknownFaceEncoding)
             if not np.any(faceMatchList): #if none are true, then we save image and encoding
-                unknownEncodings = np.append(unknownEncodings, unknownFaceEncoding) #add it to our list of unknown encodings, stops us from resaving images of same person
+                unknownEncodings.append(unknownFaceEncoding_append) #add it to our list of unknown encodings, stops us from resaving images of same person
                 #print(unknownEncodings)
                 time = CurrentTime()
                 img = Image.fromarray(image, 'RGB')
