@@ -52,7 +52,7 @@ def getLocation(sock): #receive data
               parsed = pynmea2.parse(data[index])
               print("Recieved: ")
               #print(data[0])
-              return ("Latitude: " + str(parsed.latitude) + " Longitude: " + str(parsed.longitude))
+              return (parsed.latitude, parsed.longitude)
          except Exception:
               print("Disconnected, aborting")
               #close bluetooth connection

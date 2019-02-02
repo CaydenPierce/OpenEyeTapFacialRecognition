@@ -17,6 +17,7 @@ import datetime as dt
 from blue import GPSbluetooth
 import json
 from PIL import Image
+import requests
 
 
 #this program controls the face recognition abilities of the OpenEyeTap
@@ -133,10 +134,23 @@ def Timestamp():
         camera.annotate_text = CurrentTime()
         sec() # calls the second function so that it can update its current second value
 
+def getAddress(lat, long):
+    try:
+        url = "https://nominatim.openstreetmap.org/reverse?format=json&lat={}&lon={}&zoom=18&addressdetails=1".format(str(lat), str(long))
+        response = requests.get(url)
+        data= response.json()
+        house_number = data['address']['house_number']
+        road = data['address']['road']
+        city = data['address']['city']
+        return data['display_name']
+    except Exception:
+        return ("Latitude: " + lat + " Longitude: " + long)
+
 def createLog(name): #adds log of seeing person. Contains context such as who, what, where, when
         with open("./memory/lifelog.csv", "a", newline="") as log_csv: #open in append and read mode
             time = CurrentTime()
-            location = GPSbluetooth.getLocation(sock)
+            lat, long = GPSbluetooth.getLocation(sock)
+            location = getAddress(lat, long)
             memory = [time, location, name]
             wr = csv.writer(log_csv, delimiter = ',')
             wr.writerow(memory)
