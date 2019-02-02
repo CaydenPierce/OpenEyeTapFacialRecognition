@@ -15,6 +15,7 @@ import datetime
 from time import sleep
 import datetime as dt
 from blue import GPSbluetooth
+import json
 
 
 #this program controls the face recognition abilities of the OpenEyeTap
@@ -121,8 +122,12 @@ def Timestamp():
         sec() # calls the second function so that it can update its current second value
 
 def createLog(name): #adds log of seeing person. Contains context such as who, what, where, when
-        with open("./memory/lifelog.txt", "a") as log: #open in append and read mode
-            log.write(CurrentTime() + " " + name + "\n")
+        with open("./memory/lifelog.csv", "a", newline="") as log_csv: #open in append and read mode
+            time = CurrentTime()
+            location = GPSbluetooth.getLocation(sock)
+            memory = [time, location, name]
+            wr = csv.writer(log_csv, delimiter = ',')
+            wr.writerow(memory)
             
         
 #start the bluetooth server for GPS, save socket
@@ -180,7 +185,6 @@ while counter < 15:
             else:
                 fullName = "Unknown person"
         camera.annotate_text = fullName
-        GPSbluetooth.getLocation(sock)
         #v.set(fullName)
         #if (fullName == "Unknown person"):
             #scipy.misc.imsave('./newpeopleimages/outfile.jpg', image)
@@ -189,5 +193,5 @@ while counter < 15:
     else:
         #reset annotation
         camera.annotate_text = ""
-        
+sock.close()      
 camera.stop_preview()

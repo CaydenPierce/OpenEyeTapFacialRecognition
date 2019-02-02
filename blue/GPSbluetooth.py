@@ -31,16 +31,15 @@ def startBluetoothServer(): #main
     # Create the client socket
     sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
     sock.connect((host, port))
+    print("socket created")
     return sock
 
 def getLocation(sock): #receive data
-        
-         #try:
+         try:
               validNMEA = True
               while validNMEA: #finding the data needed to pass to NMEA parser
                   data = sock.recv(1024)
                   data = data.decode('utf-8')
-                  print(data)
                   print('\n')
                   data = data.split('\r')
                   for i, val in enumerate(data[:-1]): #don't scan last in case it isn't complete
@@ -53,10 +52,8 @@ def getLocation(sock): #receive data
               parsed = pynmea2.parse(data[index])
               print("Recieved: ")
               #print(data[0])
-              print("Latitude: " + str(parsed.latitude) + " Longitude: " + str(parsed.longitude))
-         #except Exception:
-              #print("Disconnected, aborting")
+              return ("Latitude: " + str(parsed.latitude) + " Longitude: " + str(parsed.longitude))
+         except Exception:
+              print("Disconnected, aborting")
               #close bluetooth connection
-              #sock.close()
-         #finally:
-              #None
+              sock.close()
