@@ -16,6 +16,7 @@ from time import sleep
 import datetime as dt
 from blue import GPSbluetooth
 import json
+from PIL import Image
 
 
 #this program controls the face recognition abilities of the OpenEyeTap
@@ -186,9 +187,9 @@ while counter < 15:
                 fullName = "Unknown person"
         camera.annotate_text = fullName
         #v.set(fullName)
-        #if (fullName == "Unknown person"):
-            #scipy.misc.imsave('./newpeopleimages/outfile.jpg', image)
-            #camera.capture('./newpeopleimages/UKNOWN.jpg')
+        if (fullName == "Unknown person"): #saves pictures of unknown people to be later named
+            img = Image.fromarray(image, 'RGB')
+            img.save('./newpeopleimages/ToName{}'.format(CurrentTime())
             
     else:
         #reset annotation
