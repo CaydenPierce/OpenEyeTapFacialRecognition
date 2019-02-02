@@ -40,12 +40,12 @@ def getLocation(sock): #receive data
               while validNMEA: #finding the data needed to pass to NMEA parser
                   data = sock.recv(1024)
                   data = data.decode('utf-8')
-                  print('\n')
+                  #print('\n')
                   data = data.split('\r')
                   for i, val in enumerate(data[:-1]): #don't scan last in case it isn't complete
                       if val.startswith("$GPGGA"):
                           index = i
-                          print("break")
+                          #print("break")
                           validNMEA = False
                           break
 

@@ -81,12 +81,13 @@ def loadNewPeople():
                     break
     
     for i, file in enumerate(files):
-        fullName = names[i][0] + " " + names[i][1]
-        #load image from file
-        print("./newpeopleimages/{}".format(file))
-        saveEncoding(getEncodingURI("./newpeopleimages/{}".format(file)), fullName, 'known')
-        os.system("cp {} {}".format(("./newpeopleimages/{}".format(file)), ("./knownpeopleimages/{}".format(file))))
-        os.remove("./newpeopleimages/{}".format(file))
+        if not (file.startswith("ToName")): #this is used as all pictures that requiring labelling are appended with the suffix "ToName"-, followed by the time the picture was taken
+            fullName = names[i][0] + " " + names[i][1]
+            #load image from file
+            print("./newpeopleimages/{}".format(file))
+            saveEncoding(getEncodingURI("./newpeopleimages/{}".format(file)), fullName, 'known')
+            os.system("cp {} {}".format(("./newpeopleimages/{}".format(file)), ("./knownpeopleimages/{}".format(file))))
+            os.remove("./newpeopleimages/{}".format(file))
             
 def loadKnownEncodings(): #loads known encodings
     knownEncodings = []
@@ -110,7 +111,7 @@ def loadUnknownEncodings(): #loads unknown encodings
         currentEncoding = openEncoding("./unknown_encodings/{}".format(file))
         unknownEncodings.append(currentEncoding)
         a = file.partition(".")[0] #remove file extension
-    unknownEncodings = unknownEncodings     
+    unknownEncodings = np.array(unknownEncodings)   
     return unknownEncodings
 
 def CurrentTime():
@@ -199,11 +200,18 @@ while counter < 15:
         if (fullName == "Unknown person"): #saves pictures and encodings of unknown people to be later named
             #create encoding
             unknownFaceEncoding = getEncodingImg(image)
-            faceMatchList = face_recognition.compare_faces(np.array(unknownEncodings), unknownFaceEncoding)
+            print("nparray")
+            #print(unknownEncodings)
+            #faceRecArray = np.array(unknownEncodings)
+            #print(unknownEncodings)
+            faceMatchList = face_recognition.compare_faces(unknownEncodings, unknownFaceEncoding)
             print(faceMatchList)
-            print(np.any(faceMatchList))
+            #print(unknownEncodings)
+            #print(faceMatchList)
+            #print(np.any(faceMatchList))
             if not np.any(faceMatchList): #if none are true, then we save image and encoding
-                unknownEncodings.append(unknownFaceEncoding) #add it to our list of unknown encodings, stops us from resaving images of same person
+                unknownEncodings = np.append(unknownEncodings, unknownFaceEncoding) #add it to our list of unknown encodings, stops us from resaving images of same person
+                #print(unknownEncodings)
                 time = CurrentTime()
                 img = Image.fromarray(image, 'RGB')
                 img.save('./newpeopleimages/ToName{}.jpg'.format(time))
