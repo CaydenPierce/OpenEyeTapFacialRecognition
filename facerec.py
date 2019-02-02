@@ -14,6 +14,7 @@ import csv
 import datetime
 from time import sleep
 import datetime as dt
+from blue import GPSbluetooth
 
 
 #this program controls the face recognition abilities of the OpenEyeTap
@@ -124,6 +125,8 @@ def createLog(name): #adds log of seeing person. Contains context such as who, w
             log.write(CurrentTime() + " " + name + "\n")
             
         
+#start the bluetooth server for GPS, save socket
+sock = GPSbluetooth.startBluetoothServer()
 
 #first, load any new people we want to add to our database of encodings
 loadNewPeople()
@@ -177,6 +180,7 @@ while counter < 15:
             else:
                 fullName = "Unknown person"
         camera.annotate_text = fullName
+        GPSbluetooth.getLocation(sock)
         #v.set(fullName)
         #if (fullName == "Unknown person"):
             #scipy.misc.imsave('./newpeopleimages/outfile.jpg', image)
