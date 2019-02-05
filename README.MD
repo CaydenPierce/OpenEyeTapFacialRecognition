@@ -1,4 +1,4 @@
-Prosopagnosia OpenEyeTap
+#OpenEyeTap for Prosopagnosia 
 
 In 2018, I became very interested in developing wearable technologies. I believe that the future of tech is on and within our bodies. This led me to build an OpenEyeTap smart eye glass, as I had found online after searching for opensource wearable. Not long after becoming interested in the OpenEyeTap hardware project, I met the incredible Dr. Steve Mann of MannLab, inventor of the EyeTap. He understood exactly the vision I put forward, and pointed me to his own research into the area of humanistic intelligence. Steve Mann proposed I build an EyeTap to function as a solution for individuals suffering from Prosopagnasia. I have done this. The program uses facial recognition to give a live display of the name of the individual that you are in conversation with.
 
