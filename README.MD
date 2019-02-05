@@ -1,10 +1,6 @@
-VIRTUAL MEMORY
+Prosopagnosia OpenEyeTap
 
-Raymond Kurzweil, the leading innovator, thinker, futurist, and author claims in his last two books (The Singularity is Near and How to Create a Mind) that the future of technology lies in an ever increasing symbiosis between biological intelligence and artificial intelligence. I agree with this vision, and realize that the businesses of the future will be those that take into account the ever growing intimacy that we experience with our machines.
-
-Not long after becoming interested in this project, I met the incredible inventor Dr. Steve Mann of MannLab. He understood exactly the vision I put forward, and pointed me to his own research into this very device, dating back over 20 years.
-
-This is the aim of my virtual memory product. I am developing a system that, when attached to a user (either around the neck of in a headset) records video and audio input. The differing sources of information comes together to become what I refer to as “virtual memories’. The information is then connected to other virtual “memories” by analyzing patterns that new information shares with old information. In essence, this technology will align sensory input into a coherent structure, just as our biological memory works, except with perfect recall. This is being paired with multiple technologies, such as face and image recognition, to provide the “scenarios” and connections that is used by the software when making connections between memories.
+In 2018, I became very interested in developing wearable technologies. I believe that the future of tech is on and within our bodies. This led me to build an OpenEyeTap smart eye glass, as I had found online after searching for opensource wearable. Not long after becoming interested in the OpenEyeTap hardware project, I met the incredible Dr. Steve Mann of MannLab, inventor of the EyeTap. He understood exactly the vision I put forward, and pointed me to his own research into the area of humanistic intelligence. Steve Mann proposed I build an EyeTap to function as a solution for individuals suffering from Prosopagnasia. I have done this. The program uses facial recognition to give a live display of the name of the individual that you are in conversation with.
 
 INSTALL
 
