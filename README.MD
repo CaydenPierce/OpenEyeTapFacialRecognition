@@ -28,7 +28,7 @@ USE
 
 The face file is an example of a face encoding. It is in CSV format and it loaded in python into a numpy array as such.
 
-facerac.py utilizes the EyeTap principle but has an extrememly low framerate due to the extrememly week ARM core on the Pi Zero. Looking into solutions to this.
+facerac.py utilizes the EyeTap principle but has an extrememly low framerate due to the extrememly week ARM core on the Pi Zero. Looking into solutions to this. NOTE: this supports bluetooth capability, with an Android app streaming NMEA to the pi. Will provide more info (and a bluetooth timeout) soon
 
 facerec_GUI.py utilizes a simple tkinter GUI to display names of people recognized.
 
