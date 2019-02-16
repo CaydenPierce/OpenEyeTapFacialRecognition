@@ -1,1 +1,1 @@
-These are just test images for future integration of emotion detection.
+These are just test images. Integration of emotion detection will be included soon.

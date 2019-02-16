@@ -57,3 +57,4 @@ def getLocation(sock): #receive data
               print("Disconnected, aborting")
               #close bluetooth connection
               sock.close()
+	      sock = None

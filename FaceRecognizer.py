@@ -1,20 +1,22 @@
 '''
-Facial Recognition for the OpenEyeTap
-Created by Cayden Pierce 2018/19. Some code borrowed from dashcam utility created by the OpenEyeTap team.
-Humanistic Intelligence is the future we are all creating together.
+Wearable Face Recognizer for the OpenEyeTap
+Created by Cayden Pierce. Some code borrowed from dashcam utility created by the OpenEyeTap team.
+This can be used by everyone.
+An especially interesting application for sufferers of prosopagnosia.
+Humanistic Intelligence is the future we are all creating together..
 '''
 
 
+from blue import GPSbluetooth
 import face_recognition
 import os
 import numpy as np
 import picamera
-from time import sleep
 import csv
-import datetime
 from time import sleep
 import datetime as dt
 import tkinter as tk
+
 
 
 #this program controls the face recognition abilities of the OpenEyeTap
@@ -120,8 +122,30 @@ def Timestamp():
         camera.annotate_text = CurrentTime()
         sec() # calls the second function so that it can update its current second value
 
+def getAddress(lat, long):
+    try:
+        url = "https://nominatim.openstreetmap.org/reverse?format=json&lat={}&lon={}&zoom=18&addressdetails=1".format(str(lat), str(long))
+        response = requests.get(url)
+        data= response.json()
+        house_number = data['address']['house_number']
+        road = data['address']['road']
+        city = data['address']['city']
+        return data['display_name']
+    except Exception:
+        return ("Latitude: " + lat + " Longitude: " + long)
 
+def createLog(name): #adds log of seeing person. Contains context such as who, what, where, when
+        with open("./memory/lifelog.csv", "a", newline="") as log_csv: #open in append and read mode
+            time = CurrentTime()
+            lat, long = GPSbluetooth.getLocation(sock)
+            location = getAddress(lat, long)
+            memory = [time, location, name]
+            wr = csv.writer(log_csv, delimiter = ',')
+            wr.writerow(memory)
+            
         
+#start the bluetooth server for GPS, save socket
+sock = GPSbluetooth.startBluetoothServer()
 
 #first, load any new people we want to add to our database of encodings
 loadNewPeople()
@@ -139,6 +163,8 @@ image = np.empty((240, 320, 3), dtype=np.uint8)
 #start camera view
 #camera.start_preview()
 
+
+#Following is the GUI window, creating a label and setting attributes
 root = tk.Tk()
 root.configure(background='black')
 root.attributes('-zoomed', True) #setting dispaly fullscreen
@@ -150,25 +176,25 @@ w = tk.Label(root, textvariable=v, font=(None, 65), bg = 'black', fg = 'white', 
 w.config(bg="black")
 w.pack()
 
-while True:
-#main program loop
+while True: #main program loop
 
-    # Shows timestamp on top of video
-    #Timestamp() 
-    
+    # Shows timestamp on top of video - optional
+    #Timestamp()    
     #take pic
     camera.capture(image, format='rgb')
 
 
     #scan for faces
     face_locations = face_recognition.face_locations(image)
-    
-    if face_locations: #runs if face is detected
+
+    #runs if face is detected
+    if face_locations:
         #create encoding
         unknownFaceEncoding = getEncodingImg(image)
-        #print if match
+        #check for match
         faceMatchList = face_recognition.compare_faces(knownEncodings, unknownFaceEncoding)
-        print(faceMatchList)
+        #print match list
+        #print(faceMatchList)
         for i, value in enumerate(faceMatchList):
             if value:
                 fullName = names[i][0] + names[i][1]
@@ -176,6 +202,7 @@ while True:
                 print("I see {}!".format(fullName))
                 #camera.annotate_text = fullName
                 v.set(fullName)
+		createLog(fullName)
                 break
             else:
                 fullName = "Unknown person"
@@ -188,5 +215,9 @@ while True:
         v.set("")
         #reset annotation
         #camera.annotate_text = ""
-    root.update_idletasks()  
-#camera.stop_preview()
+
+    #update GUI
+    root.update_idletasks()
+    
+#if loop breaks - stop camera
+camera.stop_preview()

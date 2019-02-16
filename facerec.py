@@ -1,6 +1,8 @@
 '''
-Facial Recognition for the OpenEyeTap
-Created by Cayden Pierce 2018/19. Some code borrowed from dashcam utility created by the OpenEyeTap team.
+Wearable Face Recognizer for the OpenEyeTap
+Created by Cayden Pierce. Some code borrowed from dashcam utility created by the OpenEyeTap team.
+This can be used by everyone.
+An especially interesting application for sufferers of prosopagnosia.
 Humanistic Intelligence is the future we are all creating together.
 '''
 
