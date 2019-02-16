@@ -69,10 +69,6 @@ Your phone will now stream NMEA data to the OpenEyeTap. Latitiude and Longitude 
 
 # Soon to come
 
-Speedometer
-Virtual Memory
-Full database support - done
-Emotion recognition
-Lifelogging (Glogging)
+Speedometer, Virtual Memory, Full database support - done, Emotion recognition, Lifelogging (Glogging)
 
 
