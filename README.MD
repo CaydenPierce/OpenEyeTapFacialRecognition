@@ -31,7 +31,7 @@ Follow instructions in DISABLESCREENSAVER.MD to disable screensaver in PIXEL.
 
 Install dependencies (for Python3):
 
-'''
+```
 
 sudo apt-get install python3-tk
 pip install numpy
