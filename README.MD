@@ -1,11 +1,5 @@
 # WearableFaceRecognizer
 
-Wearable Face Recognizer for the OpenEyeTap
-Created by Cayden Pierce. Some code borrowed from dashcam utility created by the OpenEyeTap team.
-This can be used by everyone.
-An especially interesting application is for sufferers of prosopagnosia.
-Humanistic Intelligence is the future we are all creating together..
-
 I am very interested in developing wearable technologies. I believe that the future of tech is on and within our bodies. This led me to build an OpenEyeTap smart eye glass, as I had found online after searching for opensource wearables. Not long after becoming interested in the OpenEyeTap hardware project, I met the incredible Dr. Steve Mann of MannLab, inventor of the EyeTap. He understood exactly the vision I put forward, and pointed me to his own research into the area of Humanistic Intelligence systems. Steve Mann proposed I build an EyeTap to function as a solution for individuals suffering from prosopagnasia. I have done this. The program uses facial recognition to give a live display of the name of the individual that you are in conversation with.
 
 ## INSTALL
