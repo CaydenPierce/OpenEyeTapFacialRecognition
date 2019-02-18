@@ -34,10 +34,11 @@ Install dependencies (for Python3):
 ```
 
 sudo apt-get install python3-tk
-pip install numpy
+pip install numpy pybluez pynmea2
 
 ```
-
+*there may be more, just follow the prompts if errors occur. I need to setup a proper python virtualenv for this reason.
+ 
 Use raspi-config to enable picamera in Raspbian.
 
 ## USE
@@ -89,3 +90,8 @@ Your phone will now stream NMEA data to the OpenEyeTap. Latitiude and Longitude 
 Audio/Voice support, Speedometer, Virtual Memory, Full database support - done, Emotion recognition, Lifelogging (Glogging)
 
 
+# Help
+
+Please reach out if you need a hand, have any problems, want to add something, or just want to talk wearables and HI!
+
+Email: cpierc3 at uwo dottt  ca 

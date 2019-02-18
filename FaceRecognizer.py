@@ -202,7 +202,7 @@ while True: #main program loop
                 print("I see {}!".format(fullName))
                 #camera.annotate_text = fullName
                 v.set(fullName)
-		createLog(fullName)
+                createLog(fullName)
                 break
             else:
                 fullName = "Unknown person"
