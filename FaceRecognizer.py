@@ -137,9 +137,14 @@ def getAddress(lat, long):
 def createLog(name): #adds log of seeing person. Contains context such as who, what, where, when
         with open("./memory/lifelog.csv", "a", newline="") as log_csv: #open in append and read mode
             time = CurrentTime()
-            lat, long = GPSbluetooth.getLocation(sock)
-            location = getAddress(lat, long)
+            coordinates = GPSbluetooth.getLocation(sock)
+            if coordinates:
+            	lat, long = coordinates
+            	location = getAdress(lat, long)
+            else:
+            	location = ("Latitude: {}, Longitude: {}".format(lat, long))
             memory = [time, location, name]
+
             wr = csv.writer(log_csv, delimiter = ',')
             wr.writerow(memory)
             

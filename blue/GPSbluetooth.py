@@ -35,7 +35,7 @@ def startBluetoothServer(): #main
     return sock
 
 def getLocation(sock): #receive data
-         try:
+#         try:
               validNMEA = True
               while validNMEA: #finding the data needed to pass to NMEA parser
                   data = sock.recv(1024)
@@ -53,8 +53,11 @@ def getLocation(sock): #receive data
               print("Recieved: ")
               #print(data[0])
               return (parsed.latitude, parsed.longitude)
-         except Exception:
-              print("Disconnected, aborting")
-              #close bluetooth connection
-              sock.close()
-              sock = None
+        # except Exception:
+         #     print("Disconnected, aborting")
+          #    #close bluetooth connection
+           #   sock.close()
+            #  sock = None
+
+sock = startBluetoothServer()
+print(getLocation(sock))
