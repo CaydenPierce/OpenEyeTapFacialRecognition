@@ -1,3 +1,5 @@
+#no bluetooth, in case an Android is unavailable
+
 '''
 Wearable Face Recognizer for the OpenEyeTap
 Created by Cayden Pierce. Some code borrowed from dashcam utility created by the OpenEyeTap team.
@@ -7,7 +9,6 @@ Humanistic Intelligence is the future we are all creating together..
 '''
 
 
-from blue import GPSbluetooth
 import face_recognition
 import os
 import numpy as np
@@ -16,7 +17,6 @@ import csv
 from time import sleep
 import datetime as dt
 import tkinter as tk
-import requests
 
 
 
@@ -123,35 +123,13 @@ def Timestamp():
         camera.annotate_text = CurrentTime()
         sec() # calls the second function so that it can update its current second value
 
-def getAddress(lat, long):
-    #try:
-        url = "https://nominatim.openstreetmap.org/reverse?format=json&lat={}&lon={}&zoom=18&addressdetails=1".format(str(lat), str(long))
-        response = requests.get(url)
-        data= response.json()
-        house_number = data['address']['house_number']
-        road = data['address']['road']
-        city = data['address']['city']
-        return data['display_name']
-   # except Exception:
-        #return ("Latitude: " + str(lat) + " Longitude: " + str(long))
-
 def createLog(name): #adds log of seeing person. Contains context such as who, what, where, when
         with open("./memory/lifelog.csv", "a", newline="") as log_csv: #open in append and read mode
             time = CurrentTime()
-            coordinates = GPSbluetooth.getLocation(sock)
-            if coordinates:
-            	lat, long = coordinates
-            	location = getAdress(lat, long)
-            else:
-            	location = ("Latitude: {}, Longitude: {}".format(lat, long))
+            location = "NA"
             memory = [time, location, name]
-
             wr = csv.writer(log_csv, delimiter = ',')
             wr.writerow(memory)
-            
-        
-#start the bluetooth server for GPS, save socket
-sock = GPSbluetooth.startBluetoothServer()
 
 #first, load any new people we want to add to our database of encodings
 loadNewPeople()
