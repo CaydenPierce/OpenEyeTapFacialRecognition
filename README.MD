@@ -15,7 +15,7 @@ Clone this repo to hardware. Set .bashrc to start FaceRecognizer.py upon booting
 
 ```
 export DISPLAY=:0.0
-python3 /home/pi/OpenEyeTapVirtualMemory/FaceRecognizer_noBluetooth.py
+python3 /home/pi/OpenEyeTapVirtualMemory/FaceRecognizer.py
 ```
 *replace path with your path.
 
@@ -43,13 +43,13 @@ Use raspi-config to enable picamera in Raspbian.
 
 ## USE
 
-### FaceRecognizer_noBluetooth.py
-
-No bluetooth on this one, in case you don't have an Android with the GPS app working. This utilizes a GUI to display names of people recognized. Memories are stored every time you see a new person. Name, time data is saved in a lifelog file in ./memory.
-
 ### FaceRecognizer.py
 
 This utilizes a GUI to display names of people recognized. Memories are stored every time you see a new person. Name, time, and location data is saved in a lifelog file in ./memory
+
+### FaceRecognizer_noBluetooth.py
+
+No bluetooth on this one, in case you don't have an Android with the GPS app working. This utilizes a GUI to display names of people recognized. Memories are stored every time you see a new person. Name, time data is saved in a lifelog file in ./memory.
 
 ### facerec.py
 
