@@ -58,6 +58,3 @@ def getLocation(sock): #receive data
           #    #close bluetooth connection
            #   sock.close()
             #  sock = None
-
-sock = startBluetoothServer()
-print(getLocation(sock))
