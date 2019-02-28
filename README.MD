@@ -76,17 +76,13 @@ Simply wear the device around. Everyone you see that isn't recognized will be ad
 
 ## GPS setup
 
-Turn on Bluetooth on pi and make discoverable.
+Turn on Bluetooth on pi, make discoverable, trust your phone, then:
 
 Run "Share GPS" app on your Anroid phone.:
 
 http://www.jillybunch.com/sharegps/
 
-And pair your phone to your pi. Edit Bluetooth server in ./blue/ to include the address of your device. Use 
-```
-hcitool scan
-```
-to find your Bluetooth address. Then change the communication address in the blueooth server program. -> in ./blue/. Make your device visible in the "Share GPS" app.
+And pair your phone to your pi. Make your device visible in the "Share GPS" app.
 
 Your phone will now stream NMEA data to the OpenEyeTap. Latitiude and Longitude is converted into addresses, destinations, and institutions. 
 
