@@ -12,7 +12,12 @@ Image: https://drive.google.com/file/d/1ZZagIRXM0wIGF5QBK9OQ5Fzi3HPLsdFC/view?us
 
 ### OPTION 2
 
-Clone this repo to hardware. Set .bashrc to start FaceRecognizer.py upon booting by adding lines:
+Clone this repo to hardware.
+
+```
+git clone https://github.com/CaydenPierce/OpenEyeTapFacialRecognition
+```
+Set .bashrc to start FaceRecognizer.py upon booting by adding lines:
 
 ```
 export DISPLAY=:0.0
