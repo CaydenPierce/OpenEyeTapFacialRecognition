@@ -124,7 +124,7 @@ def Timestamp():
         sec() # calls the second function so that it can update its current second value
 
 def createLog(name): #adds log of seeing person. Contains context such as who, what, where, when
-        with open("./memory/lifelog.csv", "a", newline="") as log_csv: #open in append and read mode
+        with open(os.path.join(os.path.dirname(__file__), "memory/lifelog.csv"), "a", newline="") as log_csv: #open in append and read mode
             time = CurrentTime()
             location = "NA"
             memory = [time, location, name]
