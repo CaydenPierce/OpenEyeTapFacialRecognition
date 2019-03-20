@@ -124,7 +124,7 @@ def Timestamp():
         sec() # calls the second function so that it can update its current second value
 
 def getAddress(lat, long):
-    #try:
+    try:
         url = "https://nominatim.openstreetmap.org/reverse?format=json&lat={}&lon={}&zoom=18&addressdetails=1".format(str(lat), str(long))
         response = requests.get(url)
         data= response.json()
@@ -132,8 +132,8 @@ def getAddress(lat, long):
         road = data['address']['road']
         city = data['address']['city']
         return data['display_name']
-   # except Exception:
-        #return ("Latitude: " + str(lat) + " Longitude: " + str(long))
+    except Exception:
+        return ("Latitude: " + str(lat) + " Longitude: " + str(long))
 
 def createLog(name): #adds log of seeing person. Contains context such as who, what, where, when
         with open(os.path.join(os.path.dirname(__file__), "memory/lifelog.csv"), "a", newline="") as log_csv: #open in append and read mode

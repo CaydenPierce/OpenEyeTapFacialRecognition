@@ -36,8 +36,10 @@ def startBluetoothServer(): #main
 
 def getLocation(sock): #receive data
 #         try:
+              count = 0 #counts so we don't get an infinite loop if GPS loses its fix
               validNMEA = True
-              while validNMEA: #finding the data needed to pass to NMEA parser
+              while (validNMEA and (count < 10)): #finding the data needed to pass to NMEA parser
+                  count += 1
                   data = sock.recv(1024)
                   data = data.decode('utf-8')
                   #print('\n')
@@ -48,11 +50,13 @@ def getLocation(sock): #receive data
                           #print("break")
                           validNMEA = False
                           break
-
-              parsed = pynmea2.parse(data[index])
-              print("Recieved: ")
-              #print(data[0])
-              return (parsed.latitude, parsed.longitude)
+              if (count < 10):
+              	parsed = pynmea2.parse(data[index])
+              	print("Recieved: ")
+              	#print(data[0])
+              	return (parsed.latitude, parsed.longitude)
+              else:
+              	return (["NA","NA"])
         # except Exception:
          #     print("Disconnected, aborting")
           #    #close bluetooth connection
