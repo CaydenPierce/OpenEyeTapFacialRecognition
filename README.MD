@@ -6,7 +6,7 @@ I am very interested in developing wearable technologies. I believe that the fut
 
 ### OPTION 1
 *NOTE: This is an older version
-To try out the code on your EyeTap, you can simply flash the SD image onto your SD and plug and play in the OpenEyeTap. (You will need a => 32GB card... will make a smaller one soon. If you want it smaller, mount it and configure using dd bash tool.)
+To try out the code on your EyeTap, you can simply flash the SD image onto your SD and plug and play in the OpenEyeTap. (If your SD is too small, just use dd bash tool to write image, and ignore warning that SD is too small, it should work just fine)
 
 Image: https://drive.google.com/file/d/1ZZagIRXM0wIGF5QBK9OQ5Fzi3HPLsdFC/view?usp=sharing
 
