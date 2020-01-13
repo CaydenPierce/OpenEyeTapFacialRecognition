@@ -1,6 +1,6 @@
 # Wearable Face Recognizer
 
-I am very interested in developing wearable technologies. I believe that the future of tech is on and within our bodies. This led me to build an OpenEyeTap smart eye glass, as I had found online after searching for opensource wearables. Not long after becoming interested in the OpenEyeTap hardware project, I met Dr. Steve Mann of MannLab, inventor of the EyeTap. He understood exactly the vision I put forward, and pointed me to his own research into the area of Humanistic Intelligence systems. Steve Mann proposed I build an EyeTap to function as a solution for individuals suffering from prosopagnasia. I have done this. The program uses facial recognition to give a live display of the name of the individual that you are in conversation with.
+Run live facial recognition on the OpenEyeTap wearable (www.openeyetap.com/) or similiar wearable computers.
 
 ## INSTALL
 
